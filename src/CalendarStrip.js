@@ -278,7 +278,7 @@ export default class CalendarStrip extends Component {
         });
         return (
             <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
-                {/*<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>*/}
+                {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
                 <ScrollView pagingEnabled={this.props.pagingEnabled}
                             horizontal={true}
                             showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
