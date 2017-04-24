@@ -51,6 +51,7 @@ export default class CalendarDay extends Component {
         this.animValue = new Animated.Value(0);
         let date = this.props.date.format('YYYY-MM-DD');
         let now = moment().format('YYYY-MM-DD');
+        this.isAfter = moment(date).isAfter(now);
         this.isToday = moment(now).isSame(date, 'day');
     }
 
@@ -123,9 +124,10 @@ export default class CalendarDay extends Component {
           dateNameStyle = [styles.dateName, this.props.highlightDateNameStyle];
           dateNumberStyle = [styles.dateNumber, this.props.highlightDateNumberStyle];
         }
-
+        console.log(this.isAfter);
         return (
-          <TouchableOpacity ref='mainButton' onPress={this.props.onDateSelected.bind(this, this.props.date)}>
+          <TouchableOpacity ref='mainButton' onPress={this.props.onDateSelected.bind(this, this.props.date)}
+            disabled={this.isAfter}>
             <Animated.View style={[styles.dateContainer, animObject]}>
               <Text style={dateNameStyle}>{this.props.date.format('ddd').toUpperCase()}</Text>
               <Text style={dateNumberStyle}>{this.props.date.date()}</Text>
