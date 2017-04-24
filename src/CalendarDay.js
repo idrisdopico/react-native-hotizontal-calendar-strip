@@ -10,6 +10,7 @@ import {
     Easing,
     TouchableOpacity
 } from 'react-native';
+import moment from 'moment';
 import styles from './Calendar.style.js';
 
 export default class CalendarDay extends Component {
@@ -48,6 +49,9 @@ export default class CalendarDay extends Component {
     constructor(props) {
         super(props);
         this.animValue = new Animated.Value(0);
+        let date = this.props.date.format('YYYY-MM-DD');
+        let now = moment().format('YYYY-MM-DD');
+        this.isToday = moment(now).isSame(date, 'day');
     }
 
     //When component mounts, if it is seleced run animation for animation show
@@ -55,6 +59,13 @@ export default class CalendarDay extends Component {
         if (this.props.selected) {
             this.animate(1);
         }
+        setTimeout(() => {
+            this.refs.mainButton.measure((fx, fy, width, height, px, py) => {
+                if (this.isToday) {
+                  this.props.activeDayCoord(px);
+                }
+            });
+        }, 0);
     }
 
     //When component receives the props, if it is selected use showing animation
@@ -114,7 +125,7 @@ export default class CalendarDay extends Component {
         }
 
         return (
-          <TouchableOpacity onPress={this.props.onDateSelected.bind(this, this.props.date)}>
+          <TouchableOpacity ref='mainButton' onPress={this.props.onDateSelected.bind(this, this.props.date)}>
             <Animated.View style={[styles.dateContainer, animObject]}>
               <Text style={dateNameStyle}>{this.props.date.format('ddd').toUpperCase()}</Text>
               <Text style={dateNumberStyle}>{this.props.date.date()}</Text>

@@ -102,6 +102,7 @@ export default class CalendarStrip extends Component {
         this.formatCalendarHeader = this.formatCalendarHeader.bind(this);
         this.animate = this.animate.bind(this);
         this.resetAnimation = this.resetAnimation.bind(this);
+        this.scrollToActiveDay = this.scrollToActiveDay.bind(this);
     }
 
     //Animate showing of CalendarDay elements
@@ -247,47 +248,55 @@ export default class CalendarStrip extends Component {
         return `${monthFormatting.length > 1 ? firstDay.format(monthFormatting) : ''} ${monthFormatting.length > 1 ? '/' : ''} ${lastDay.format(this.props.calendarHeaderFormat)}`;
     }
 
+    scrollToActiveDay(activeX){
+      setTimeout(() => {
+        this.refs.datesScrollView.scrollTo({x: activeX - 10}, true);
+      }, 1000);
+    }
+
     render() {
-        let opacityAnim = 1;
-        let datesRender = this.getDatesForMonth().map((date, index) => {
-            if (this.props.calendarAnimation) {
-                opacityAnim = this.animatedValue[index];
-            }
-            return (
-                <Animated.View key={date} style={{opacity: opacityAnim, flex: 1}}>
-                    <CalendarDay
-                        date={date}
-                        key={date}
-                        selected={this.isDateSelected(date)}
-                        onDateSelected={this.onDateSelected}
-                        calendarColor={this.props.calendarColor}
-                        highlightColor={this.props.highlightColor}
-                        dateNameStyle={this.props.dateNameStyle}
-                        dateNumberStyle={this.props.dateNumberStyle}
-                        weekendDateNameStyle={this.props.weekendDateNameStyle}
-                        weekendDateNumberStyle={this.props.weekendDateNumberStyle}
-                        highlightDateNameStyle={this.props.highlightDateNameStyle}
-                        highlightDateNumberStyle={this.props.highlightDateNumberStyle}
-                        styleWeekend={this.props.styleWeekend}
-                        selection={this.props.selection}
-                        selectionAnimation={this.props.selectionAnimation}
-                        borderHighlightColor={this.props.borderHighlightColor}
-                    />
-                </Animated.View>
-            );
-        });
-        return (
-            <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
-                {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
-                <ScrollView pagingEnabled={this.props.pagingEnabled}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
-                            onMomentumScrollEnd={() => console.log('onMomentumScrollEnd')}>
-                    <View style={styles.calendarDates}>
-                        {datesRender}
-                    </View>
-                </ScrollView>
-            </View>
-        );
+      let opacityAnim = 1;
+      let datesRender = this.getDatesForMonth().map((date, index) => {
+          if (this.props.calendarAnimation) {
+              opacityAnim = this.animatedValue[index];
+          }
+          return (
+              <Animated.View key={'day_' + index} style={{opacity: opacityAnim, flex: 1}}>
+                  <CalendarDay
+                      date={date}
+                      key={date}
+                      selected={this.isDateSelected(date)}
+                      onDateSelected={this.onDateSelected}
+                      calendarColor={this.props.calendarColor}
+                      highlightColor={this.props.highlightColor}
+                      dateNameStyle={this.props.dateNameStyle}
+                      dateNumberStyle={this.props.dateNumberStyle}
+                      weekendDateNameStyle={this.props.weekendDateNameStyle}
+                      weekendDateNumberStyle={this.props.weekendDateNumberStyle}
+                      highlightDateNameStyle={this.props.highlightDateNameStyle}
+                      highlightDateNumberStyle={this.props.highlightDateNumberStyle}
+                      styleWeekend={this.props.styleWeekend}
+                      selection={this.props.selection}
+                      selectionAnimation={this.props.selectionAnimation}
+                      borderHighlightColor={this.props.borderHighlightColor}
+                      activeDayCoord={this.scrollToActiveDay}
+                  />
+              </Animated.View>
+          );
+      });
+      return (
+          <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
+              {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
+              <ScrollView pagingEnabled={this.props.pagingEnabled}
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={this.props.showsHorizontalScrollIndicator}
+                          onMomentumScrollEnd={() => console.log('onMomentumScrollEnd')}
+                          ref='datesScrollView'>
+                  <View style={styles.calendarDates}>
+                      {datesRender}
+                  </View>
+              </ScrollView>
+          </View>
+      );
     }
 }
