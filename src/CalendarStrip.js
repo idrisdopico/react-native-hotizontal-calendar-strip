@@ -306,7 +306,6 @@ export default class CalendarStrip extends Component {
     }
 
     render() {
-      console.log('render');
       let opacityAnim = 1;
       let datesRender = this.getDatesForMonth().map((date, index) => {
           if (this.props.calendarAnimation) {
@@ -338,10 +337,14 @@ export default class CalendarStrip extends Component {
       });
       return (
           <View style={[styles.calendarContainer, {backgroundColor: this.props.calendarColor}, this.props.style]}>
-              <View>
-                <F_Button onPress={() => { this.onTapF() }} />
-                {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row'
+              }}>
                 <B_Button onPress={() => { this.onTapB() }} />
+                {<Text style={[styles.calendarHeader, this.props.calendarHeaderStyle]}>{this.formatCalendarHeader()}</Text>}
+                <F_Button onPress={() => { this.onTapF() }} />
               </View>
               <ScrollView pagingEnabled={this.props.pagingEnabled}
                           horizontal={true}
