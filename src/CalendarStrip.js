@@ -27,7 +27,7 @@ class F_Button extends Component {
         activeOpacity={0.7}
         onPress={() => { this.props.onPress() }}>
         <View style={styles.FButton}>
-          <Image style={styles.FButtonImage} source={require('../../images/arrow-right.png')}/>
+          <Image style={styles.FButtonImage} source={require('./img/arrow-right.png')}/>
         </View>
       </TouchableHighlight>
     );
@@ -42,7 +42,7 @@ class B_Button extends Component {
         activeOpacity={0.7}
         onPress={() => { this.props.onPress() }}>
         <View style={styles.BButton}>
-          <Image style={styles.BButtonImage} source={require('../../images/arrow-left.png')}/>
+          <Image style={styles.BButtonImage} source={require('./img/arrow-left.png')}/>
         </View>
       </TouchableHighlight>
     );
